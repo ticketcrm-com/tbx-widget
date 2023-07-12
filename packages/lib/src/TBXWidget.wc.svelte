@@ -30,7 +30,6 @@
   onMount(() => {
     iframeUrl = src || iriStart + iri || "https://widget.ticketcrm.com/";
   });
-
 </script>
 
 {#if iframeUrl}
