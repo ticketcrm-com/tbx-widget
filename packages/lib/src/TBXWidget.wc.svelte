@@ -28,19 +28,9 @@
   // below code required for webcomponent integration
   let ref: HTMLDivElement;
   onMount(() => {
-    console.log(src, iriStart, iri);
     iframeUrl = src || iriStart + iri || "https://widget.ticketcrm.com/";
-    console.log(iframeUrl);
   });
 
-  // const updateParent = function (val) {
-  //   if (ref?.getRootNode()?.host) {
-  //     console.log("host", ref.getRootNode().host, valid);
-  //     ref.getRootNode().host.value = val;
-  //     ref.getRootNode().host.valid = valid;
-  //   }
-  // };
-  // $: updateParent(value);
 </script>
 
 {#if iframeUrl}
