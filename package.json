@@ -1,0 +1,36 @@
+{
+  "name": "tbx-widget",
+  "description": "A base template for building a shareable web components library with Vite + Svelte",
+  "version": "0.0.0",
+  "type": "module",
+  "module": "dist/lib/tbx-widget.js",
+  "main": "dist/lib/tbx-widget.umd.js",
+  "scripts": {
+    "start": "npm run dev -s",
+    "dev": "vite --config vite.demo.config.ts",
+    "build": "vite build",
+    "build:demo": "vite build --config vite.demo.config.ts",
+    "preview": "vite preview --config vite.demo.config.ts",
+    "format": "prettier --ignore-path=.gitignore --write --plugin-search-dir=. .",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "prepublishOnly": "npm run build -s"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.4.1",
+    "@tsconfig/svelte": "^5.0.0",
+    "prettier": "~2.8.8",
+    "prettier-plugin-svelte": "^2.10.1",
+    "svelte": "^4.0.5",
+    "svelte-check": "^3.4.3",
+    "svelte-preprocess": "^5.0.4",
+    "tslib": "^2.4.0",
+    "typescript": "^5.1.3",
+    "vite": "^4.3.9"
+  },
+  "files": [
+    "dist/lib"
+  ],
+  "dependencies": {
+    "svelte-tel-input": "^3.0.0"
+  }
+}
