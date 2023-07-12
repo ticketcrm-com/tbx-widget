@@ -23,6 +23,12 @@
     margin: 0 auto;
   }
 
+  tbx-widget {
+    display: block;
+    min-width: 600px;
+    min-height: 800px;
+  }
+
   h1 {
     color: #ff3e00;
     font-size: 4em;

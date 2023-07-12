@@ -38,7 +38,7 @@
 
 <style>
   iframe {
-    min-width: 600px;
-    min-height: 800px;
+    min-width: 100%;
+    min-height: 100%;
   }
 </style>
