@@ -1,18 +1,29 @@
 <script lang="ts">
   import "../../lib";
+
   let element;
 </script>
 
 <main>
   <h1>TBX widget!</h1>
-  <p class="container">
-    <tbx-widget
-      bind:this={element}
+  <div>
+    <p class="container">
+      <tbx-widget
+        bind:this={element}
+        widget="c86c29dd3158560562dae05c329732084fe01104"
+        lang="uk"
+        thanks="https://ticketsbox.com/checkout_complete/c86c29dd3158560562dae05c329732084fe01104"
+      />
+    </p>
+  </div>
+  <div>
+    <tbx-modal
       widget="c86c29dd3158560562dae05c329732084fe01104"
       lang="uk"
       thanks="https://ticketsbox.com/checkout_complete/c86c29dd3158560562dae05c329732084fe01104"
-    />
-  </p>
+      >open widget</tbx-modal
+    >
+  </div>
 </main>
 
 <style>
