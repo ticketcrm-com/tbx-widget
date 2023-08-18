@@ -5,56 +5,40 @@
 </script>
 
 <main>
-  <h1>TBX widget!</h1>
-  <div>
-    <p class="container">
-      <tbx-widget
-        bind:this={element}
-        widget="c86c29dd3158560562dae05c329732084fe01104"
-        lang="uk"
-        thanks="https://ticketsbox.com/checkout_complete/c86c29dd3158560562dae05c329732084fe01104"
-      />
-    </p>
+  <h1>Widget component</h1>
+  <div class="widget-container">
+    <tbx-widget
+      bind:this={element}
+      widget="25210f2535d06bfc9493bed7bfe293195549e791"
+      lang="uk"
+      thanks="https://ticketsbox.com/checkout_complete/25210f2535d06bfc9493bed7bfe293195549e791"
+    />
   </div>
+  <h1>Popup component</h1>
   <div>
     <tbx-modal
-      widget="c86c29dd3158560562dae05c329732084fe01104"
+      widget="25210f2535d06bfc9493bed7bfe293195549e791"
       lang="uk"
-      thanks="https://ticketsbox.com/checkout_complete/c86c29dd3158560562dae05c329732084fe01104"
-      >open widget</tbx-modal
+      thanks="https://ticketsbox.com/checkout_complete/25210f2535d06bfc9493bed7bfe293195549e791"
     >
+      <button class="tbx-popup"> Buy a ticket </button>
+    </tbx-modal>
   </div>
+  <h1>Playground</h1>
+  <style
+    style="display: block; white-space:pre; color-scheme: only light; transition: .5s all; border: solid white 1px"
+    contenteditable=""
+  >
+    .widget-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .tbx-popup {
+      background-color: #ee4256;
+      border: #ee4256 7px solid;
+      border-radius: 7px;
+      margin: 7px auto;
+    }
+  </style>
 </main>
-
-<style>
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
-  }
-
-  tbx-widget {
-    display: block;
-    min-width: 600px;
-    min-height: 800px;
-  }
-
-  h1 {
-    color: #ff3e00;
-    font-size: 4em;
-    line-height: 1.1;
-    font-weight: 100;
-  }
-
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
-
-    .container {
-      display: inline-block;
-      max-width: 320px;
-    }
-  }
-</style>
