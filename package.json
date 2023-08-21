@@ -30,8 +30,5 @@
   },
   "files": [
     "dist/lib"
-  ],
-  "dependencies": {
-    "svelte-tel-input": "^3.0.0"
-  }
+  ]
 }
