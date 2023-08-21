@@ -20,7 +20,7 @@
   let ref: HTMLLinkElement;
 
   let iframeUrl: string;
-  let ga: {id: string, session_id: string, client_id: string}[]
+  let ga: { id: string; session_id: string; client_id: string }[];
 
   const getLink = () => {
     const url = new URL("https://widget.ticketcrm.com/");
@@ -28,7 +28,7 @@
       ...(widget && { widgetHash: widget }),
       ...(lang && { lang }),
       ...(thanks && { thank: encodeURIComponent(thanks) }),
-      ...(ga && {ga: JSON.stringify(ga)})
+      ...(ga && { ga: JSON.stringify(ga) }),
     };
     const new_params = new URLSearchParams([
       ...Array.from(url.searchParams.entries()),
@@ -38,7 +38,7 @@
     return new_url.href;
   };
 
-  $: ga, iframeUrl = getLink(), console.log('ga, ', ga)
+  $: ga, (iframeUrl = getLink()), console.log("ga, ", ga);
 
   const getGa = () => {
     window.addEventListener("message", function (e) {
@@ -58,15 +58,17 @@
             )
           );
 
-          Promise.all(metrics).then(([client_id, session_id, ...args]: string[]) => {
-                ga = [{ id: ids[0], client_id, session_id }].concat(
-                  args.map((session_id, i) => ({
-                    id: ids[i + 1],
-                    client_id,
-                    session_id,
-                  }))
-                )
-          });
+          Promise.all(metrics).then(
+            ([client_id, session_id, ...args]: string[]) => {
+              ga = [{ id: ids[0], client_id, session_id }].concat(
+                args.map((session_id, i) => ({
+                  id: ids[i + 1],
+                  client_id,
+                  session_id,
+                }))
+              );
+            }
+          );
         }
       }
     });
@@ -83,7 +85,9 @@
   });
 </script>
 
-<div class="slot-container" on:click={location.href=iframeUrl}><slot /></div>
+<div class="slot-container" on:click={(location.href = iframeUrl)}>
+  <slot />
+</div>
 
 <style>
   .slot-container {
