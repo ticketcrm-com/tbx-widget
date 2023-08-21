@@ -11,7 +11,7 @@
 
 <script lang="ts">
   import { onMount } from "svelte";
-  import Loader from "./Loader.svelte";
+  import Loader from "./Loader.wc.svelte";
 
   export let widget: string | undefined;
   export let lang: string | undefined;
