@@ -5,6 +5,7 @@
       widget: { reflect: true, type: "String", attribute: "widget" },
       lang: { reflect: true, type: "String", attribute: "lang" },
       thanks: { reflect: true, type: "String", attribute: "thanks" },
+      sellerUrl: { reflect: true, type: "String", attribute: "sellerUrl" },
     },
   }}
 />
@@ -16,7 +17,8 @@
   export let widget: string | undefined;
   export let lang: string | undefined;
   export let thanks: string | undefined;
-
+  export let sellerUrl: string | undefined;
+  
   // below code required for webcomponent integration
   let ref: HTMLIFrameElement;
 
