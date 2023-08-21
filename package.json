@@ -10,7 +10,7 @@
     "dev": "vite --config vite.demo.config.ts",
     "build": "vite build",
     "build:demo": "vite build --config vite.demo.config.ts",
-    "build:all": "npm run build && npm run build:demo",
+    "build:all": "npm run build:demo && npm run build",
     "preview": "vite preview --config vite.demo.config.ts",
     "format": "prettier --ignore-path=.gitignore --write --plugin-search-dir=. .",
     "check": "svelte-check --tsconfig ./tsconfig.json",

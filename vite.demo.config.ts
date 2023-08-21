@@ -8,7 +8,7 @@ export default defineConfig({
     dedupe: ["svelte"],
   },
   build: {
-    outDir: "../../dist/demo",
+    outDir: "../../dist",
     emptyOutDir: true,
   },
   plugins: [
