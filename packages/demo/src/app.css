@@ -14,15 +14,3 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-
-.widget-container {
-  display: flex;
-  justify-content: center;
-}
-
-.tbx-popup {
-  background-color: #ee4256;
-  border: #ee4256 7px solid;
-  border-radius: 7px;
-  margin: 7px auto;
-}

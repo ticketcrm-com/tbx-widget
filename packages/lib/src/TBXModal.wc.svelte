@@ -187,10 +187,6 @@
     }
   }
 
-  .container::-webkit-scrollbar {
-    display: none;
-  }
-
   /* overlay popup with loader */
   iframe,
   .loader {

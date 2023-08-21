@@ -37,7 +37,6 @@ export default defineConfig({
       exclude: /\.wc\.svelte$/ as any,
       compilerOptions: {
         customElement: false,
-        css: true,
       },
     }),
     svelte({
