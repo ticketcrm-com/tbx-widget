@@ -2,9 +2,22 @@
   customElement={{
     tag: "tbx-widget",
     props: {
-      widget: { reflect: true, type: "String", attribute: "widget" },
+      eventHash: { reflect: true, type: "String", attribute: "event-hash" },
+      abonementHash: {
+        reflect: true,
+        type: "String",
+        attribute: "abonement-hash",
+      },
       lang: { reflect: true, type: "String", attribute: "lang" },
-      thanks: { reflect: true, type: "String", attribute: "thanks" },
+      currency: { reflect: true, type: "String", attribute: "currency" },
+      thanksUrl: { reflect: true, type: "String", attribute: "thanks-url" },
+      sellerUrl: { reflect: true, type: "String", attribute: "seller-url" },
+      homeUrl: { reflect: true, type: "String", attribute: "home-url" },
+      homeLogoUrl: {
+        reflect: true,
+        type: "String",
+        attribute: "home-logo-Url",
+      },
     },
   }}
 />
@@ -13,9 +26,15 @@
   import { onMount } from "svelte";
   import Loader from "./Loader.wc.svelte";
 
-  export let widget: string | undefined;
+  export let eventHash: string | undefined;
+  export let abonementHash: string | undefined;
   export let lang: string | undefined;
-  export let thanks: string | undefined;
+  export let currency: string | undefined;
+  export let thanksUrl: string | undefined;
+  export let sellerUrl: string | undefined;
+  export let homeUrl: string | undefined;
+  export let homeLogoUrl: string | undefined;
+
   let iframeUrl: string;
   let loaded: boolean;
 
@@ -25,9 +44,14 @@
   const getLink = () => {
     const url = new URL("https://widget.ticketcrm.com/");
     const add_params = {
-      ...(widget && { widgetHash: widget }),
+      ...(eventHash && { widgetHash: eventHash }),
+      ...(abonementHash && { seasonHash: abonementHash }),
       ...(lang && { lang }),
-      ...(thanks && { thank: encodeURIComponent(thanks) }),
+      ...(currency && { currency }),
+      ...(thanksUrl && { thank: encodeURIComponent(thanksUrl) }),
+      ...(sellerUrl && { sellerUrl: encodeURIComponent(sellerUrl) }),
+      ...(homeUrl && { url: encodeURIComponent(homeUrl) }),
+      ...(homeLogoUrl && { logo: encodeURIComponent(homeLogoUrl) }),
     };
     const new_params = new URLSearchParams([
       ...Array.from(url.searchParams.entries()),
@@ -132,8 +156,6 @@
   iframe {
     border: none;
     outline: none;
-    width: 100%;
-    height: 100%;
   }
 
   @media (max-width: 768px) {

@@ -2,33 +2,57 @@
   customElement={{
     tag: "tbx-button",
     props: {
-      widget: { reflect: true, type: "String", attribute: "widget" },
+      eventHash: { reflect: true, type: "String", attribute: "event-hash" },
+      abonementHash: {
+        reflect: true,
+        type: "String",
+        attribute: "abonement-hash",
+      },
       lang: { reflect: true, type: "String", attribute: "lang" },
-      thanks: { reflect: true, type: "String", attribute: "thanks" },
+      currency: { reflect: true, type: "String", attribute: "currency" },
+      thanksUrl: { reflect: true, type: "String", attribute: "thanks-url" },
+      sellerUrl: { reflect: true, type: "String", attribute: "seller-url" },
+      homeUrl: { reflect: true, type: "String", attribute: "home-url" },
+      homeLogoUrl: {
+        reflect: true,
+        type: "String",
+        attribute: "home-logo-Url",
+      },
     },
   }}
 />
 
 <script lang="ts">
   import { onMount } from "svelte";
+  import App from "../../demo/src/App.svelte";
 
-  export let widget: string | undefined;
+  export let eventHash: string | undefined;
+  export let abonementHash: string | undefined;
   export let lang: string | undefined;
-  export let thanks: string | undefined;
+  export let currency: string | undefined;
+  export let thanksUrl: string | undefined;
+  export let sellerUrl: string | undefined;
+  export let homeUrl: string | undefined;
+  export let homeLogoUrl: string | undefined;
 
   // below code required for webcomponent integration
   let ref: HTMLLinkElement;
 
   let iframeUrl: string;
-  let ga: {id: string, session_id: string, client_id: string}[]
+  let ga: { id: string; session_id: string; client_id: string }[];
 
   const getLink = () => {
     const url = new URL("https://widget.ticketcrm.com/");
     const add_params = {
-      ...(widget && { widgetHash: widget }),
+      ...(eventHash && { widgetHash: eventHash }),
+      ...(abonementHash && { seasonHash: abonementHash }),
       ...(lang && { lang }),
-      ...(thanks && { thank: encodeURIComponent(thanks) }),
-      ...(ga && {ga: JSON.stringify(ga)})
+      ...(currency && { currency }),
+      ...(thanksUrl && { thank: encodeURIComponent(thanksUrl) }),
+      ...(sellerUrl && { sellerUrl: encodeURIComponent(sellerUrl) }),
+      ...(homeUrl && { url: encodeURIComponent(homeUrl) }),
+      ...(homeLogoUrl && { logo: encodeURIComponent(homeLogoUrl) }),
+      //...(ga && {ga: JSON.stringify(ga)})
     };
     const new_params = new URLSearchParams([
       ...Array.from(url.searchParams.entries()),
@@ -38,7 +62,7 @@
     return new_url.href;
   };
 
-  $: ga, iframeUrl = getLink(), console.log('ga, ', ga)
+  $: ga, (iframeUrl = getLink()), console.log("ga, ", ga);
 
   const getGa = () => {
     window.addEventListener("message", function (e) {
@@ -58,15 +82,17 @@
             )
           );
 
-          Promise.all(metrics).then(([client_id, session_id, ...args]: string[]) => {
-                ga = [{ id: ids[0], client_id, session_id }].concat(
-                  args.map((session_id, i) => ({
-                    id: ids[i + 1],
-                    client_id,
-                    session_id,
-                  }))
-                )
-          });
+          Promise.all(metrics).then(
+            ([client_id, session_id, ...args]: string[]) => {
+              ga = [{ id: ids[0], client_id, session_id }].concat(
+                args.map((session_id, i) => ({
+                  id: ids[i + 1],
+                  client_id,
+                  session_id,
+                }))
+              );
+            }
+          );
         }
       }
     });
@@ -83,7 +109,17 @@
   });
 </script>
 
-<div class="slot-container" on:click={location.href=iframeUrl}><slot /></div>
+<div
+  class="slot-container"
+  on:click={() => {
+    location.href = iframeUrl;
+  }}
+  on:click={() => {
+    location.href = iframeUrl;
+  }}
+>
+  <slot />
+</div>
 
 <style>
   .slot-container {
