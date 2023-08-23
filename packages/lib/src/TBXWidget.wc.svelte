@@ -119,6 +119,10 @@
     <iframe
       title="TBX widget"
       class:hidden={!loaded}
+      on:mouseover={() =>
+        (document.querySelector("body").style.overflow = "hidden")}
+      on:mouseleave={() =>
+        (document.querySelector("body").style.overflow = "auto")}
       bind:this={ref}
       src={iframeUrl}
     />

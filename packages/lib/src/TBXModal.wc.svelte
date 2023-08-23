@@ -143,13 +143,15 @@
     on:click={() =>
       (document.querySelector("body").style.overflow = "auto") &&
       (opened = false)}
-    class="close">✖</button
+    class="close">&times;</button
   >
 </div>
 
 <style>
   .hidden {
+    opacity: 0;
     visibility: hidden;
+    transition: 0.2s ease 0.2s;
   }
 
   .slot-container {
@@ -158,56 +160,71 @@
 
   /* popup */
   .close {
-    position: absolute;
-    top: calc(10vh - 35px);
-    color: #273d71;
-    background: white;
+    padding: 0;
     width: 40px;
     height: 35px;
+    color: #273d71;
+    background: white;
+    font-size: 30px;
     border: none;
     border-radius: 100% 100% 0 0;
-    padding: 0;
-    font-size: 30px;
+    position: absolute;
+    top: calc(10dvh - 35px);
+    opacity: 1;
+    transition: opacity 0.3s ease 0.8s;
   }
 
   .transparent {
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
     color: white;
     background: transparent;
+    border: none;
     position: absolute;
     top: 0;
     right: 0;
-    width: 40px;
-    height: 40px;
-    color: white;
-    background: transparent;
-    border: none;
-    padding: 0;
-    font-size: 30px;
   }
 
   .container {
-    top: 0;
-    left: 0;
     width: 100vw;
-    height: 100vh;
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.7);
+    height: 100dvh;
     display: flex;
     align-items: end;
     justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
     z-index: 3000;
   }
 
+  .container.hidden iframe {
+    opacity: 0;
+    transform: perspective(600px) translate(0px, -100%) rotateX(45deg);
+  }
+
+  .container.hidden .close {
+    opacity: 0;
+  }
+
   iframe {
-    position: relative;
     margin: 0 auto;
-    background-color: #ffffff;
+    width: 100vw;
+    height: 90dvh;
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 90vh;
+    background-color: #ffffff;
     border: none;
     border-radius: 5px;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    /*Shows iframe animation*/
+    opacity: 1;
+    transform: perspective(600px) translate(0px, 0%) rotateX(0deg);
+    transition: all 0.8s ease;
   }
 
   /* overlay popup with loader */
@@ -219,28 +236,30 @@
 
   @media (min-width: 768px) {
     .close {
-      position: absolute;
-      top: 0;
-      right: 0;
+      padding: 0;
       width: 40px;
       height: 40px;
+      font-size: 30px;
       color: white;
       background: transparent;
       border: none;
-      padding: 0;
-      font-size: 30px;
+      position: absolute;
+      top: 0;
+      right: 0;
     }
+
     .container {
       align-items: center;
     }
+
     iframe {
+      width: 95vw;
+      height: 95dvh;
+      max-height: 500px;
+      max-width: 800px;
       border: none;
       border-radius: 0;
       outline: none;
-      width: 95vw;
-      height: 95vh;
-      max-height: 500px;
-      max-width: 800px;
     }
   }
 </style>
