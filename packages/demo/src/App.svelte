@@ -1,18 +1,20 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import "../../lib";
 
-  let eventHash = "";
-  let abonementHash = "";
-  let lang = "uk";
-  let currency = "";
-  let thanksUrl = "";
-  let sellerUrl = "";
-  let homeUrl = "";
-  let homeLogoUrl = "";
+  let eventHash: string = "";
+  let abonementHash: string = "";
+  let lang: "uk" | "ru" | "en" | string = "uk";
+  let currency: "UAH" | "EUR" | "USD" | string = "";
+  let thanksUrl: string = "";
+  let sellerUrl: string = "";
+  let homeUrl: string = "";
+  let homeLogoUrl: string = "";
 
-  let type = "event";
-  let selected = "tbx-modal";
-  let output = "";
+  let type: "event" | "abonement" = "event";
+  let selected: "tbx-modal" | "tbx-widget" | "tbx-button" = "tbx-modal";
+  let output: string = "";
+  let attr: Record<string, string>;
 
   $: attr = {
     ...(eventHash && type === "event" && { eventHash }),
@@ -24,6 +26,32 @@
     ...(homeUrl && { homeUrl }),
     ...(homeLogoUrl && { homeLogoUrl }),
   };
+
+  const getLink = () => {
+    const url = new URL(window.location.href);
+    const new_params = new URLSearchParams(Object.entries(attr)).toString();
+    const new_url = new URL(`${url.origin}${url.pathname}?${new_params}`);
+    return new_url.href;
+  };
+
+  $: setTimeout(
+    () => attr && window.history.pushState(null, "", getLink()),
+    500
+  );
+
+  onMount(() => {
+    const url = new URL(window.location.href);
+    ({
+      eventHash,
+      abonementHash,
+      lang,
+      currency,
+      thanksUrl,
+      sellerUrl,
+      homeUrl,
+      homeLogoUrl,
+    } = Object.fromEntries(url.searchParams));
+  });
 
   function onSubmit() {
     output = document.getElementsByTagName(selected)[0].outerHTML;
@@ -75,8 +103,13 @@
         <button class="tbx-button">Buy on TBX page</button>
       </tbx-button>
     </label>
-    <label>
-      <input bind:group={selected} type="radio" value="tbx-widget" />
+    <label style="display: block">
+      <input
+        style="margin-bottom: 10px"
+        bind:group={selected}
+        type="radio"
+        value="tbx-widget"
+      />
       <tbx-widget {...attr} />
     </label>
     <button on:click={onSubmit}>Get code</button>
