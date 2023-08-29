@@ -1,43 +1,89 @@
 <script lang="ts">
   import "../../lib";
 
-  let element;
+  let eventHash = "";
+  let abonementHash = "";
+  let lang = "uk";
+  let currency = "";
+  let thanksUrl = "";
+  let sellerUrl = "";
+  let homeUrl = "";
+  let homeLogoUrl = "";
+
+  let type = "event";
+  let selected = "tbx-modal";
+  let output = "";
+
+  $: attr = {
+    ...(eventHash && type === "event" && { eventHash }),
+    ...(abonementHash && type === "abonement" && { abonementHash }),
+    ...(lang && { lang }),
+    ...(currency && { currency }),
+    ...(thanksUrl && { thanksUrl }),
+    ...(sellerUrl && { sellerUrl }),
+    ...(homeUrl && { homeUrl }),
+    ...(homeLogoUrl && { homeLogoUrl }),
+  };
+
+  function onSubmit() {
+    output = document.getElementsByTagName(selected)[0].outerHTML;
+    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100);
+  }
 </script>
 
 <main>
-  <h1>Widget component</h1>
-  <div class="widget-container">
-    <tbx-widget
-      bind:this={element}
-      event-hash="4ddb389341cf6a8ca2ec9e7e13b1e3171cc38003"
-    />
-  </div>
-  <h1>Popup component</h1>
-  <div>
-    <tbx-modal event-hash="4ddb389341cf6a8ca2ec9e7e13b1e3171cc38003">
-      <button class="tbx-popup">Buy a ticket</button>
-    </tbx-modal>
-  </div>
-  <h1>Button with redirect to Ticketsbox widget component</h1>
-  <tbx-button event-hash="4ddb389341cf6a8ca2ec9e7e13b1e3171cc38003">
-    <button class="tbx-button"> Buy on TBX page </button>
-  </tbx-button>
-  <h1>Playground</h1>
-  <style
-    style="display: block; white-space:pre; color-scheme: only light; transition: .5s all; border: solid white 1px"
-    contenteditable=""
-  >
-    .widget-container {
-      display: flex;
-      justify-content: center;
-    }
+  Widget type:
+  <label>
+    <input bind:group={type} type="radio" value="event" />
+    event widget
+  </label>
+  <label>
+    <input bind:group={type} type="radio" value="abonement" />
+    abonement widget
+  </label>
+  {#if type === "event"}
+    <label
+      >Event Hash*: <input bind:value={eventHash} type="text" required /></label
+    >
+  {/if}
+  {#if type === "abonement"}
+    <label
+      >Abonement Hash*: <input
+        bind:value={abonementHash}
+        type="text"
+        required
+      /></label
+    >
+  {/if}
+  <label>Language: <input bind:value={lang} type="text" /></label>
+  <label>Currency: <input bind:value={currency} type="text" /></label>
+  <label>Thanks Url: <input bind:value={thanksUrl} type="text" /></label>
+  <label>Seller Url: <input bind:value={sellerUrl} type="text" /></label>
+  <label>Home Page Url: <input bind:value={homeUrl} type="text" /></label>
+  <label>Home Page Url: <input bind:value={homeLogoUrl} type="text" /></label>
 
-    .tbx-popup,
-    .tbx-button {
-      background-color: #ee4256;
-      border: #ee4256 7px solid;
-      border-radius: 7px;
-      margin: 7px auto;
-    }
-  </style>
+  {#if (eventHash && type === "event") || (abonementHash && type === "abonement")}
+    <label>
+      <input bind:group={selected} type="radio" value="tbx-modal" />
+      <tbx-modal {...attr}>
+        <button class="tbx-popup">Buy a ticket</button>
+      </tbx-modal>
+    </label>
+    <label>
+      <input bind:group={selected} type="radio" value="tbx-button" />
+      <tbx-button {...attr}>
+        <button class="tbx-button">Buy on TBX page</button>
+      </tbx-button>
+    </label>
+    <label>
+      <input bind:group={selected} type="radio" value="tbx-widget" />
+      <tbx-widget {...attr} />
+    </label>
+    <button on:click={onSubmit}>Get code</button>
+    {#if output}
+      <br />
+      <h3>HTML component code to paste on your page</h3>
+      <textarea readonly>{output}</textarea>
+    {/if}
+  {/if}
 </main>

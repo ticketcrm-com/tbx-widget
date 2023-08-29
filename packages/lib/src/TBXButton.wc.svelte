@@ -23,8 +23,7 @@
 />
 
 <script lang="ts">
-  import { onMount } from "svelte";
-  import App from "../../demo/src/App.svelte";
+  import { afterUpdate, onMount } from "svelte";
 
   export let eventHash: string | undefined;
   export let abonementHash: string | undefined;
@@ -43,6 +42,8 @@
 
   const getLink = () => {
     const url = new URL("https://widget.ticketcrm.com/");
+    const urlParams = new URLSearchParams(window.location.search);
+    const utm_source = window.location.host.replace("www.", "");
     const add_params = {
       ...(eventHash && { widgetHash: eventHash }),
       ...(abonementHash && { seasonHash: abonementHash }),
@@ -52,7 +53,21 @@
       ...(sellerUrl && { sellerUrl: encodeURIComponent(sellerUrl) }),
       ...(homeUrl && { url: encodeURIComponent(homeUrl) }),
       ...(homeLogoUrl && { logo: encodeURIComponent(homeLogoUrl) }),
-      //...(ga && {ga: JSON.stringify(ga)})
+      ...(ga && { ga: JSON.stringify(ga) }),
+
+      ...(!utm_source.includes("ticketsbox") && { utm_source }),
+      ...(urlParams.get("utm_source") && {
+        utm_source: urlParams.get("utm_source"),
+      }),
+      ...(urlParams.get("utm_medium") && {
+        utm_medium: urlParams.get("utm_medium"),
+      }),
+      ...(urlParams.get("utm_campaign") && {
+        utm_source: urlParams.get("utm_campaign"),
+      }),
+      ...(urlParams.get("utm_content") && {
+        utm_source: urlParams.get("utm_content"),
+      }),
     };
     const new_params = new URLSearchParams([
       ...Array.from(url.searchParams.entries()),
@@ -107,6 +122,8 @@
       console.log(e);
     }
   });
+
+  afterUpdate(() => (iframeUrl = getLink()));
 </script>
 
 <div
