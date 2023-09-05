@@ -117,7 +117,6 @@
                   session_id,
                 }))
               );
-              console.log("ga send");
             }
           );
         }

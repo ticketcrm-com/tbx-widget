@@ -1,49 +1,87 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <title>404 Not Found</title>
+    <meta charset="UTF-8" />
+    <!-- Для правильної роботи аналітики на сайті 
+        обов'язково має бути проініціалізована наступним чином гугл аналітика.
+     -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-EXRH9T7Z0J"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-EXRH9T7Z0J");
+    </script>
+    <!-- Імпорт нашої бібліотеки, що інтегрує віджет. Потрібно скопіювати звідси -->
+    <script
+      type="module"
+      src="https://wc.ticketcrm.com/lib/tbx-widget.min.js"
+    ></script>
+    <!-- досюди -->
   </head>
-  <meta http-equiv="refresh" content="3;https://wc.ticketcrm.com" />
-  <meta name="robots" content="noindex, nofollow" />
-  <style>
-    h1 {
-      color: #fff;
-      padding: 10px;
-      text-align: center;
-    }
+  <body>
+    <!-- Відступи кнопці задаються на зовнішньому контейнері. Інакше відступи будуть клікабельні -->
+    <div id="container-to-set-margings-and-paddings">
+      <!-- Сама кнопка, що відкриває віджет. Необхідно скопіювати -->
+      <tbx-modal
+        event-hash="c33f1584a6b914473d2266f2673c6caa1b3ca3b6"
+        thanks-url="https://forumkyiv.org/uk/thank-you-page"
+        thanks-invoice-url="https://forumkyiv.org/uk/thank-you-page-invoice"
+        seller-url="https://forumkyiv.org/uk"
+        lang="uk"
+        currency="UAH"
+      >
+        <button class="tbx-popup">Придбати квиток</button>
+      </tbx-modal>
+    </div>
+    <div id="container-to-set-margings-and-paddings">
+      <!-- Варіант для євроінвойсу -->
+      <tbx-modal
+        event-hash="c33f1584a6b914473d2266f2673c6caa1b3ca3b6"
+        thanks-url="https://forumkyiv.org/en/thank-you-page"
+        thanks-invoice-url="https://forumkyiv.org/en/thank-you-page-invoice"
+        seller-url="https://forumkyiv.org/en"
+        lang="en"
+        currency="EUR"
+      >
+        <button class="tbx-popup">Buy a ticket</button>
+      </tbx-modal>
+    </div>
 
-    p {
-      padding-top: 10px;
-      text-align: center;
-      font-weight: 500;
-      color: #fff;
-      line-height: 40px;
-    }
+    <!-- Приклад стилізації -->
+    <style>
+      tbx-modal {
+        display: inline-block;
+        margin: 0;
+        padding: 15px 50px;
+      }
 
-    a {
-      padding: 10px 20px;
-      background: 0 0;
-      border-radius: 4px;
-      border: 1px solid;
-      border-color: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      text-align: center;
-      transition: text-shadow 0.3s, box-shadow 0.3s, color 0.3s,
-        background-color 0.3s, border-color 0.3s;
-    }
+      /* Відступи від кнопки вказуються в зовнішньому контейнері - container-to-set-margings-and-paddings! */
+      .tbx-popup {
+        color: #000;
+        font-family: Gilroy, sans-serif;
+        font-weight: 700;
+        background-color: #ffb90b;
+        border: none;
+        height: 50px;
+        width: 150px;
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+      }
 
-    a:hover {
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    }
-  </style>
-  <body style="background-color: #202130">
-    <h1>404 Not Found</h1>
-    <hr />
-    <p>
-      Please visit <a href="https://wc.ticketcrm.com">wc.ticketcrm.com</a>, to
-      check docs
-    </p>
+      .tbx-popup:hover {
+        background: #1283d8;
+        color: #fff;
+        transition: color 0.35s cubic-bezier(0.3, 0.1, 0.3, 1),
+          background 0.35s cubic-bezier(0.3, 0.1, 0.3, 1);
+      }
+    </style>
   </body>
 </html>

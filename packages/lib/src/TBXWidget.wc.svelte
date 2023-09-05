@@ -123,7 +123,6 @@
               },
               "*"
             );
-            console.log("ga send");
           });
         }
       }
