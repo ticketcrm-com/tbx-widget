@@ -1,6 +1,6 @@
 <svelte:options
   customElement={{
-    tag: "tbx-modal",
+    tag: "tbx-button",
     props: {
       widgetUrl: { reflect: true, type: "String", attribute: "widget-url" },
       eventHash: { reflect: true, type: "String", attribute: "event-hash" },
@@ -29,8 +29,7 @@
 />
 
 <script lang="ts">
-  import { onMount, afterUpdate } from "svelte";
-  import Loader from "./Loader.wc.svelte";
+  import { onMount } from "svelte";
 
   export let widgetUrl: string | undefined;
   export let eventHash: string | undefined;
@@ -44,11 +43,10 @@
   export let homeLogoUrl: string | undefined;
 
   // below code required for webcomponent integration
-  let ref: HTMLIFrameElement;
+  let ref: HTMLLinkElement;
 
   let iframeUrl: string;
-  let loaded: boolean;
-  let opened: boolean;
+  let ga: { id: string; session_id: string; client_id: string }[];
 
   const getLink = () => {
     const url = new URL(widgetUrl || "https://widget.ticketcrm.com/");
@@ -66,6 +64,7 @@
       ...(sellerUrl && { sellerUrl: encodeURIComponent(sellerUrl) }),
       ...(homeUrl && { url: encodeURIComponent(homeUrl) }),
       ...(homeLogoUrl && { logo: encodeURIComponent(homeLogoUrl) }),
+      ...(ga && { ga: JSON.stringify(ga) }),
 
       ...(!utm_source.includes("ticketsbox") && { utm_source }),
       ...(urlParams.get("utm_source") && {
@@ -89,13 +88,12 @@
     return new_url.href;
   };
 
+  $: ga, (iframeUrl = getLink()), console.log("ga, ", ga);
+
   const getGa = () => {
     window.addEventListener("message", function (e) {
-      if (e.data?.type === "loaded") {
-        loaded = true;
-      }
       if (e.data?.type === "ga") {
-        const ids = e.data.data[1];
+        const ids: string[] = e.data.data[1];
         if (ids && ids[0]) {
           const metrics = [
             new Promise((resolve) => {
@@ -110,22 +108,18 @@
             )
           );
 
-          Promise.all(metrics).then(([client_id, session_id, ...args]) => {
-            ref.contentWindow.postMessage(
-              {
-                type: "_ga",
-                data: [{ id: ids[0], client_id, session_id }].concat(
-                  args.map((session_id, i) => ({
-                    id: ids[i + 1],
-                    client_id,
-                    session_id,
-                  }))
-                ),
-              },
-              "*"
-            );
-            console.log('ga synchronized');
-          });
+          Promise.all(metrics).then(
+            ([client_id, session_id, ...args]: string[]) => {
+              ga = [{ id: ids[0], client_id, session_id }].concat(
+                args.map((session_id, i) => ({
+                  id: ids[i + 1],
+                  client_id,
+                  session_id,
+                }))
+              );
+              console.log("ga send");
+            }
+          );
         }
       }
     });
@@ -136,162 +130,30 @@
       if (typeof gtag !== "undefined") {
         getGa();
       } else {
-        loaded = true;
+        iframeUrl = getLink();
       }
-      iframeUrl = getLink();
     } catch (e) {
       console.log(e);
     }
   });
 
-  afterUpdate(() => (iframeUrl = getLink()));
+  // afterUpdate(() => (iframeUrl = getLink()));
 </script>
 
 <div
   class="slot-container"
-  on:click={() =>
-    (document.querySelector("body").style.overflow = "hidden") &&
-    (opened = true)}
+  on:click={() => {
+    location.href = iframeUrl;
+  }}
+  on:click={() => {
+    location.href = iframeUrl;
+  }}
 >
   <slot />
 </div>
 
-<div class="container" class:hidden={!opened}>
-  {#if iframeUrl}
-    <iframe
-      class:hidden={!loaded}
-      title="TBX widget"
-      bind:this={ref}
-      src={iframeUrl}
-    />
-  {/if}
-  {#if !iframeUrl || !loaded}
-    <div class="loader">
-      <Loader />
-    </div>
-  {/if}
-  <button
-    class:transparent={!iframeUrl || !loaded}
-    on:click={() =>
-      (document.querySelector("body").style.overflow = "auto") &&
-      (opened = false)}
-    class="close">&times;</button
-  >
-</div>
-
 <style>
-  .hidden {
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.2s ease 0.2s;
-  }
-
   .slot-container {
     display: inline-block;
-  }
-
-  /* popup */
-  .close {
-    padding: 0;
-    width: 40px;
-    height: 35px;
-    color: #273d71;
-    background: white;
-    font-size: 30px;
-    border: none;
-    border-radius: 100% 100% 0 0;
-    position: absolute;
-    top: calc(10dvh - 35px);
-    opacity: 1;
-    transition: opacity 0.3s ease 0.8s;
-  }
-
-  .transparent {
-    padding: 0;
-    width: 40px;
-    height: 40px;
-    font-size: 30px;
-    color: white;
-    background: transparent;
-    border: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .container {
-    width: 100vw;
-    height: 100dvh;
-    display: flex;
-    align-items: end;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.7);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 3000;
-  }
-
-  .container.hidden iframe {
-    opacity: 0;
-    transform: perspective(600px) translate(0px, -100%) rotateX(45deg);
-  }
-
-  .container.hidden .close {
-    opacity: 0;
-  }
-
-  iframe {
-    margin: 0 auto;
-    width: 100vw;
-    height: 90dvh;
-    display: flex;
-    flex-direction: column;
-    background-color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    position: relative;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-
-    /*Shows iframe animation*/
-    opacity: 1;
-    transform: perspective(600px) translate(0px, 0%) rotateX(0deg);
-    transition: all 0.8s ease;
-  }
-
-  /* overlay popup with loader */
-  .loader {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-  }
-
-  @media (min-width: 768px) {
-    .close {
-      padding: 0;
-      width: 40px;
-      height: 40px;
-      font-size: 30px;
-      color: white;
-      background: transparent;
-      border: none;
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-
-    .container {
-      align-items: center;
-    }
-
-    iframe {
-      width: 95vw;
-      height: 95dvh;
-      max-height: 500px;
-      max-width: 800px;
-      border: none;
-      border-radius: 0;
-      outline: none;
-    }
   }
 </style>
