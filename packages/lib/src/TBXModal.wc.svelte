@@ -124,6 +124,7 @@
               },
               "*"
             );
+            console.log('ga synchronized');
           });
         }
       }
@@ -134,6 +135,8 @@
     try {
       if (typeof gtag !== "undefined") {
         getGa();
+      } else {
+        loaded = true;
       }
       iframeUrl = getLink();
     } catch (e) {

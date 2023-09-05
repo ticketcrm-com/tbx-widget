@@ -111,7 +111,11 @@
   <label>Language: <input bind:value={lang} type="text" /></label>
   <label>Currency: <input bind:value={currency} type="text" /></label>
   <label>Thanks Url: <input bind:value={thanksUrl} type="text" /></label>
-  <label>Thanks Invoice Url: <input bind:value={thanksUrl} type="text" /></label
+  <label
+    >Thanks Invoice Url: <input
+      bind:value={thanksInvoiceUrl}
+      type="text"
+    /></label
   >
   <label>Seller Url: <input bind:value={sellerUrl} type="text" /></label>
   <label>Home Page Url: <input bind:value={homeUrl} type="text" /></label>

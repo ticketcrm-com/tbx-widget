@@ -117,6 +117,7 @@
                   session_id,
                 }))
               );
+              console.log("ga send");
             }
           );
         }
@@ -128,6 +129,8 @@
     try {
       if (typeof gtag !== "undefined") {
         getGa();
+      } else {
+        iframeUrl = getLink();
       }
     } catch (e) {
       console.log(e);
