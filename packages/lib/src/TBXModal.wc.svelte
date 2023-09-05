@@ -2,6 +2,7 @@
   customElement={{
     tag: "tbx-modal",
     props: {
+      widgetUrl: { reflect: true, type: "String", attribute: "widget-url" },
       eventHash: { reflect: true, type: "String", attribute: "event-hash" },
       abonementHash: {
         reflect: true,
@@ -11,6 +12,11 @@
       lang: { reflect: true, type: "String", attribute: "lang" },
       currency: { reflect: true, type: "String", attribute: "currency" },
       thanksUrl: { reflect: true, type: "String", attribute: "thanks-url" },
+      thanksInvoiceUrl: {
+        reflect: true,
+        type: "String",
+        attribute: "thanks-invoice-url",
+      },
       sellerUrl: { reflect: true, type: "String", attribute: "seller-url" },
       homeUrl: { reflect: true, type: "String", attribute: "home-url" },
       homeLogoUrl: {
@@ -26,11 +32,13 @@
   import { onMount, afterUpdate } from "svelte";
   import Loader from "./Loader.wc.svelte";
 
+  export let widgetUrl: string | undefined;
   export let eventHash: string | undefined;
   export let abonementHash: string | undefined;
   export let lang: string | undefined;
   export let currency: string | undefined;
   export let thanksUrl: string | undefined;
+  export let thanksInvoiceUrl: string | undefined;
   export let sellerUrl: string | undefined;
   export let homeUrl: string | undefined;
   export let homeLogoUrl: string | undefined;
@@ -43,7 +51,7 @@
   let opened: boolean;
 
   const getLink = () => {
-    const url = new URL("https://widget.ticketcrm.com/");
+    const url = new URL(widgetUrl || "https://widget.ticketcrm.com/");
     const urlParams = new URLSearchParams(window.location.search);
     const utm_source = window.location.host.replace("www.", "");
     const add_params = {
@@ -52,6 +60,9 @@
       ...(lang && { lang }),
       ...(currency && { currency }),
       ...(thanksUrl && { thank: encodeURIComponent(thanksUrl) }),
+      ...(thanksInvoiceUrl && {
+        thankInvoice: encodeURIComponent(thanksInvoiceUrl),
+      }),
       ...(sellerUrl && { sellerUrl: encodeURIComponent(sellerUrl) }),
       ...(homeUrl && { url: encodeURIComponent(homeUrl) }),
       ...(homeLogoUrl && { logo: encodeURIComponent(homeLogoUrl) }),
