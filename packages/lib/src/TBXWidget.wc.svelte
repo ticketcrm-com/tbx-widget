@@ -123,7 +123,7 @@
               },
               "*"
             );
-            console.log("ga send");
+            console.log("ga synchronized");
           });
         }
       }

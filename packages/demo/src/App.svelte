@@ -13,7 +13,7 @@
   let sellerUrl: string = "";
   let homeUrl: string = "";
   let homeLogoUrl: string = "";
-  let isAdmin: string = "";
+  let isAdmin: boolean | string = false;
 
   let type: "event" | "abonement" | "custom" | string = "event";
   let selected: "tbx-modal" | "tbx-widget" | "tbx-button" | string =
@@ -44,7 +44,7 @@
       ...attr,
       ...(selected && { selected }),
       ...(type && { type }),
-      ...(type && { isAdmin }),
+      ...(type && isAdmin === "true" && { isAdmin }),
     };
     const new_params = new URLSearchParams(Object.entries(params)).toString();
     const new_url = new URL(`${url.origin}${url.pathname}?${new_params}`);
@@ -84,7 +84,7 @@
 </script>
 
 <main>
-  {#if isAdmin}
+  {#if isAdmin === "true"}
     <label>Widget Url: <input bind:value={widgetUrl} type="text" /></label>
   {/if}
   Widget type:

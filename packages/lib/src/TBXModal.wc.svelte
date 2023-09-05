@@ -124,7 +124,7 @@
               },
               "*"
             );
-            console.log('ga synchronized');
+            console.log("ga synchronized");
           });
         }
       }

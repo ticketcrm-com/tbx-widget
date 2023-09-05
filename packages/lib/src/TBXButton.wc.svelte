@@ -88,7 +88,7 @@
     return new_url.href;
   };
 
-  $: ga, (iframeUrl = getLink()), console.log("ga, ", ga);
+  $: ga, (iframeUrl = getLink()); // , console.log("ga, ", ga);
 
   const getGa = () => {
     window.addEventListener("message", function (e) {
@@ -117,7 +117,7 @@
                   session_id,
                 }))
               );
-              console.log("ga send");
+              console.log("ga synchronized");
             }
           );
         }
