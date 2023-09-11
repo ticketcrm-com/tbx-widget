@@ -74,10 +74,10 @@
         utm_medium: urlParams.get("utm_medium"),
       }),
       ...(urlParams.get("utm_campaign") && {
-        utm_source: urlParams.get("utm_campaign"),
+        utm_campaign: urlParams.get("utm_campaign"),
       }),
       ...(urlParams.get("utm_content") && {
-        utm_source: urlParams.get("utm_content"),
+        utm_content: urlParams.get("utm_content"),
       }),
     };
     const new_params = new URLSearchParams([
