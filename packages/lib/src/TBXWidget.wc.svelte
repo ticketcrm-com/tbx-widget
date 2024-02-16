@@ -67,7 +67,8 @@
         ...(homeUrl && { url: encodeURIComponent(homeUrl) }),
         ...(homeLogoUrl && { logo: encodeURIComponent(homeLogoUrl) }),
 
-        ...(!utm_source.includes("ticketsbox") && { utm_source }),
+        ...(!utm_source.includes("ticketsbox") &&
+          !urlParams.get("utm_source") && { utm_source }),
         ...(urlParams.get("utm_source") && {
           utm_source: urlParams.get("utm_source"),
         }),

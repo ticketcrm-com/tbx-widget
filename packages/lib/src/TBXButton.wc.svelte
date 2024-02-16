@@ -67,7 +67,8 @@
         ...(homeLogoUrl && { logo: encodeURIComponent(homeLogoUrl) }),
         ...(ga?.length && { ga: JSON.stringify(ga) }),
 
-        ...(!utm_source.includes("ticketsbox") && { utm_source }),
+        ...(!utm_source.includes("ticketsbox") &&
+          !urlParams.get("utm_source") && { utm_source }),
         ...(urlParams.get("utm_source") && {
           utm_source: urlParams.get("utm_source"),
         }),
