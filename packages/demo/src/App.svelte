@@ -16,8 +16,12 @@
   let isAdmin: boolean | string = false;
 
   let type: "event" | "abonement" | "custom" | string = "event";
-  let selected: "tbx-modal" | "tbx-widget" | "tbx-button" | string =
-    "tbx-modal";
+  let selected:
+    | "tbx-modal"
+    | "tbx-fullscreen-modal"
+    | "tbx-widget"
+    | "tbx-button"
+    | string = "tbx-modal";
   let output: string = "";
   let attr: Record<string, string>;
 
@@ -125,8 +129,14 @@
     <label>
       <input bind:group={selected} type="radio" value="tbx-modal" />
       <tbx-modal {...attr}>
-        <button class="tbx-popup">Buy a ticket</button>
+        <button class="tbx-popup">Buy on popup</button>
       </tbx-modal>
+    </label>
+    <label>
+      <input bind:group={selected} type="radio" value="tbx-fullscreen-modal" />
+      <tbx-fullscreen-modal {...attr}>
+        <button class="tbx-popup">Buy on your page</button>
+      </tbx-fullscreen-modal>
     </label>
     <label>
       <input bind:group={selected} type="radio" value="tbx-button" />

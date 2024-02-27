@@ -1,6 +1,6 @@
 <svelte:options
   customElement={{
-    tag: "tbx-modal",
+    tag: "tbx-fullscreen-modal",
     props: {
       widgetUrl: { reflect: true, type: "String", attribute: "widget-url" },
       eventHash: { reflect: true, type: "String", attribute: "event-hash" },
@@ -40,7 +40,7 @@
   export let thanksUrl: string | undefined;
   export let thanksInvoiceUrl: string | undefined;
   export let sellerUrl: string | undefined;
-  export let homeUrl: string | undefined;
+  export let homeUrl: string | undefined = "modal";
   export let homeLogoUrl: string | undefined;
 
   // below code required for webcomponent integration
@@ -99,6 +99,9 @@
   const getGa = () => {
     window.addEventListener("message", function (e) {
       try {
+        if (e.data?.type === "destroy") {
+          opened = false;
+        }
         if (e.data?.type === "loaded") {
           loaded = true;
         }
@@ -171,11 +174,6 @@
       <Loader />
     </div>
   {/if}
-  <button
-    class:transparent={!iframeUrl || !loaded}
-    on:click={() => (opened = false)}
-    class="close">&times;</button
-  >
 </div>
 
 <style>
@@ -190,21 +188,6 @@
   }
 
   /* popup */
-  .close {
-    padding: 0;
-    width: 40px;
-    height: 35px;
-    color: #273d71;
-    background: white;
-    font-size: 30px;
-    border: none;
-    border-radius: 100% 100% 0 0;
-    position: absolute;
-    top: calc(10% - 35px);
-    opacity: 1;
-    transition: opacity 0.3s ease 0.8s;
-  }
-
   .transparent {
     padding: 0;
     width: 40px;
@@ -236,14 +219,14 @@
     transform: perspective(600px) translate(0px, -100%) rotateX(45deg);
   }
 
-  .container.hidden .close {
+  .container.hidden {
     opacity: 0;
   }
 
   iframe {
     margin: 0 auto;
     width: 100%;
-    height: 90%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
@@ -266,28 +249,13 @@
   }
 
   @media (min-width: 768px) {
-    .close {
-      padding: 0;
-      width: 40px;
-      height: 40px;
-      font-size: 30px;
-      color: white;
-      background: transparent;
-      border: none;
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-
     .container {
       align-items: center;
     }
 
     iframe {
-      width: 95%;
-      height: 95%;
-      max-height: 500px;
-      max-width: 800px;
+      width: 100%;
+      height: 100%;
       border: none;
       border-radius: 0;
       outline: none;
