@@ -29,7 +29,7 @@
 />
 
 <script lang="ts">
-  import { onMount, afterUpdate } from "svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
 
   export let widgetUrl: string | undefined;
   export let eventHash: string | undefined;
@@ -98,7 +98,7 @@
     ga?.length && console.log("ga synchronized"),
     ga?.length && console.log("ga, ", ga);
 
-  const getGa = () => {
+  const onMessage = (e) => {
     try {
       const ids = document.cookie
         .split("; ")
@@ -133,11 +133,15 @@
   };
 
   onMount(() => {
-    getGa();
+    window.addEventListener("message", onMessage);
     iframeUrl = getLink();
   });
 
   afterUpdate(() => (iframeUrl = getLink()));
+
+  onDestroy(() => {
+    window.removeEventListener("message", onMessage);
+  });
 </script>
 
 <div

@@ -29,7 +29,7 @@
 />
 
 <script lang="ts">
-  import { onMount, afterUpdate } from "svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
   import Loader from "./Loader.wc.svelte";
 
   export let widgetUrl: string | undefined;
@@ -96,7 +96,7 @@
     }
   };
 
-  const getGa = () => {
+  const onMessage = (e) => {
     window.addEventListener("message", function (e) {
       try {
         if (e.data?.type === "destroy") {
@@ -149,11 +149,15 @@
   };
 
   onMount(() => {
-    getGa();
+    window.addEventListener("message", onMessage);
     iframeUrl = getLink();
   });
 
   afterUpdate(() => (iframeUrl = getLink()));
+
+  onDestroy(() => {
+    window.removeEventListener("message", onMessage);
+  });
 </script>
 
 <div class="slot-container" on:click={() => (opened = true)}>

@@ -29,7 +29,7 @@
 />
 
 <script lang="ts">
-  import { onMount, afterUpdate } from "svelte";
+  import { onMount, afterUpdate, onDestroy } from "svelte";
   import Loader from "./Loader.wc.svelte";
 
   export let widgetUrl: string | undefined;
@@ -96,61 +96,63 @@
     }
   };
 
-  const getGa = () => {
-    window.addEventListener("message", function (e) {
-      try {
-        if (e.data?.type === "loaded") {
-          loaded = true;
-        }
-        if (e.data?.type === "ga") {
-          const ids = e.data.data[1];
-          if (ids && ids[0]) {
-            const client_id = document.cookie
-              .split("; ")
-              .find((row) => row.startsWith("_ga="))
-              ?.split("=")[1]
-              .split(".")
-              .splice(-2, 2)
-              .join(".");
-            const sessions_id = ids
-              .map(
-                (id) =>
-                  document.cookie
-                    .split("; ")
-                    .find((row) => row.startsWith(`_ga_${id.split("-")[1]}`))
-                    ?.split("=")[1]
-                    .split(".")
-                    .filter((el) => el.length > 5)[0]
-              )
-              .filter((el) => el);
-            if (client_id && sessions_id.length) {
-              ref.contentWindow.postMessage(
-                {
-                  type: "_ga",
-                  data: ids.map((id, iter) => ({
-                    id,
-                    client_id,
-                    session_id: sessions_id[iter],
-                  })),
-                },
-                "*"
-              );
-              console.log("ga synchronized");
-            }
+  const onMessage = (e) => {
+    try {
+      if (e.data?.type === "loaded") {
+        loaded = true;
+      }
+      if (e.data?.type === "ga") {
+        const ids = e.data.data[1];
+        if (ids && ids[0]) {
+          const client_id = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("_ga="))
+            ?.split("=")[1]
+            .split(".")
+            .splice(-2, 2)
+            .join(".");
+          const sessions_id = ids
+            .map(
+              (id) =>
+                document.cookie
+                  .split("; ")
+                  .find((row) => row.startsWith(`_ga_${id.split("-")[1]}`))
+                  ?.split("=")[1]
+                  .split(".")
+                  .filter((el) => el.length > 5)[0]
+            )
+            .filter((el) => el);
+          if (client_id && sessions_id.length) {
+            ref.contentWindow.postMessage(
+              {
+                type: "_ga",
+                data: ids.map((id, iter) => ({
+                  id,
+                  client_id,
+                  session_id: sessions_id[iter],
+                })),
+              },
+              "*"
+            );
+            console.log("ga synchronized");
           }
         }
-      } catch (error) {
-        console.log(error);
       }
-    });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   onMount(() => {
-    getGa();
+    window.addEventListener("message", onMessage);
     iframeUrl = getLink();
   });
 
   afterUpdate(() => (iframeUrl = getLink()));
+
+  onDestroy(() => {
+    window.removeEventListener("message", onMessage);
+  });
 </script>
 
 <div class="slot-container" on:click={() => (opened = true)}>
