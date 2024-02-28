@@ -47,3 +47,18 @@ label {
 input[type="radio"] {
   margin-right: 10px;
 }
+
+.sidenote {
+  max-width: 400px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-left: auto;
+  padding-bottom: 30px;
+}
+/* Wide viewport */
+@media (max-width: 900px) {
+  .sidenote {
+    position: relative;
+  }
+}

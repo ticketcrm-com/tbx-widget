@@ -81,6 +81,24 @@
         ...(urlParams.get("utm_content") && {
           utm_content: urlParams.get("utm_content"),
         }),
+        ...(urlParams.get("utm_source_campaign") && {
+          utm_source_campaign: urlParams.get("utm_source_campaign"),
+        }),
+        ...(urlParams.get("utm_term") && {
+          utm_term: urlParams.get("utm_term"),
+        }),
+        ...(urlParams.get("gad_source") && {
+          gad_source: urlParams.get("gad_source"),
+        }),
+        ...(urlParams.get("gclid") && {
+          gclid: urlParams.get("gclid"),
+        }),
+        ...(urlParams.get("dclid") && {
+          dclid: urlParams.get("dclid"),
+        }),
+        ...(urlParams.get("fbclid") && {
+          fbclid: urlParams.get("fbclid"),
+        }),
       };
       const new_params = new URLSearchParams([
         ...Array.from(url.searchParams.entries()),

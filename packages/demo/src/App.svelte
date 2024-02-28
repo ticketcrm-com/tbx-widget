@@ -93,6 +93,15 @@
 </script>
 
 <main>
+  <div class="sidenote">
+    List of all known conversion parameters so far: utm_source, utm_medium,
+    utm_campaign, utm_source_campaign, utm_content, utm_term, gclid, dclid,
+    fbclid, gad_source
+    <hr />
+    If you didn`t find yours, please let<a href="https://t.me/bjarnadottir"
+      >us</a
+    > know
+  </div>
   {#if isAdmin === "true"}
     <label>Widget Url: <input bind:value={widgetUrl} type="text" /></label>
   {/if}
