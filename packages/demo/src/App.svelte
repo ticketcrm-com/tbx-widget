@@ -139,7 +139,7 @@
     </label>
     <label>
       <input bind:group={selected} type="radio" value="tbx-fullscreen-modal" />
-      <tbx-modal id="tbx-fullscreen-modal" {...attr} fullScreen={true}>
+      <tbx-modal id="tbx-fullscreen-modal" {...{ ...attr, fullScreen: true }}>
         <button class="tbx-fullscreen-popup">Buy on your page</button>
       </tbx-modal>
     </label>
