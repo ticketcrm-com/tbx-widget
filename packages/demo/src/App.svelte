@@ -82,7 +82,12 @@
   });
 
   function onSubmit() {
-    output = document.getElementsByTagName(selected)[0].outerHTML;
+    const clonedElement = document.getElementById(selected)?.cloneNode(true);
+    clonedElement?.removeAttribute("id");
+    clonedElement
+      ?.querySelectorAll("[control-id]")
+      .forEach((el) => el.removeAttribute("control-id"));
+    output = clonedElement?.outerHTML;
     setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100);
   }
 </script>
@@ -128,19 +133,19 @@
   {#if (eventHash && type === "event") || (abonementHash && type === "abonement") || custom}
     <label>
       <input bind:group={selected} type="radio" value="tbx-modal" />
-      <tbx-modal {...attr}>
+      <tbx-modal id="tbx-modal" {...attr}>
         <button class="tbx-popup">Buy on popup</button>
       </tbx-modal>
     </label>
     <label>
       <input bind:group={selected} type="radio" value="tbx-fullscreen-modal" />
-      <tbx-fullscreen-modal {...attr}>
-        <button class="tbx-popup">Buy on your page</button>
-      </tbx-fullscreen-modal>
+      <tbx-modal id="tbx-fullscreen-modal" {...attr} fullScreen={true}>
+        <button class="tbx-fullscreen-popup">Buy on your page</button>
+      </tbx-modal>
     </label>
     <label>
       <input bind:group={selected} type="radio" value="tbx-button" />
-      <tbx-button {...attr}>
+      <tbx-button id="tbx-button" {...attr}>
         <button class="tbx-button">Buy on TBX page</button>
       </tbx-button>
     </label>
@@ -151,7 +156,8 @@
         type="radio"
         value="tbx-widget"
       />
-      <tbx-widget {...attr} />
+      Paste widget on your page
+      <tbx-widget id="tbx-widget" {...attr} />
     </label>
     <button on:click={onSubmit}>Get code</button>
     {#if output}

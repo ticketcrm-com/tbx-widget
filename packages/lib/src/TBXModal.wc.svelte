@@ -24,6 +24,7 @@
         type: "String",
         attribute: "home-logo-Url",
       },
+      fullScreen: { reflect: true, type: "String", attribute: "full-screen" },
     },
   }}
 />
@@ -42,6 +43,7 @@
   export let sellerUrl: string | undefined;
   export let homeUrl: string | undefined;
   export let homeLogoUrl: string | undefined;
+  export let fullScreen: boolean | undefined;
 
   // below code required for webcomponent integration
   let ref: HTMLIFrameElement;
@@ -67,6 +69,7 @@
           thankInvoice: encodeURIComponent(thanksInvoiceUrl),
         }),
         ...(sellerUrl && { sellerUrl: encodeURIComponent(sellerUrl) }),
+        ...(fullScreen && { url: "modal" }),
         ...(homeUrl && { url: encodeURIComponent(homeUrl) }),
         ...(homeLogoUrl && { logo: encodeURIComponent(homeLogoUrl) }),
 
@@ -100,6 +103,10 @@
     try {
       if (e.data?.type === "loaded") {
         loaded = true;
+      }
+      if (e.data?.type === "destroy") {
+        console.log("destroyed");
+        opened = false;
       }
       if (e.data?.type === "ga") {
         const ids = e.data.data[1];
@@ -163,6 +170,7 @@
   {#if iframeUrl}
     <iframe
       class:hidden={!loaded}
+      class:fullScreen
       title="TBX widget"
       bind:this={ref}
       src={iframeUrl}
@@ -173,11 +181,13 @@
       <Loader />
     </div>
   {/if}
-  <button
-    class:transparent={!iframeUrl || !loaded}
-    on:click={() => (opened = false)}
-    class="close">&times;</button
-  >
+  {#if !fullScreen}
+    <button
+      class:transparent={!iframeUrl || !loaded}
+      on:click={() => (opened = false)}
+      class="close">&times;</button
+    >
+  {/if}
 </div>
 
 <style>
@@ -260,6 +270,10 @@
     transition: all 0.8s ease;
   }
 
+  iframe.fullScreen {
+    height: 100%;
+  }
+
   /* overlay popup with loader */
   .loader {
     width: 100%;
@@ -293,6 +307,13 @@
       border: none;
       border-radius: 0;
       outline: none;
+    }
+
+    iframe.fullScreen {
+      width: 100%;
+      height: 100%;
+      max-height: initial;
+      max-width: inherit;
     }
   }
 </style>
